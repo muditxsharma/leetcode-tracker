@@ -46,7 +46,7 @@ class LLMClient:
         }
 
         r = requests.post(url, headers=headers, json=payload, timeout=timeout)
-        r.raise_for_status()
+        r.raise_for_status
         data = r.json()
 
         content = data["choices"][0]["message"]["content"]
