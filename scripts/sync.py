@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import json
 import os
 import re
@@ -152,6 +155,9 @@ def main(run_state: Dict[str, Any]) -> Dict[str, Any]:
         ts = int(sub.get("timestamp") or item.get("timestamp") or 0)
         max_ts = max(max_ts, ts)
 
+        lang_node = sub.get("lang") or {}
+        lang_name = lang_node.get("name") or lang_node.get("verboseName") or ""
+
         meta: Dict[str, Any] = {
             "platform": "leetcode",
             "username": username,
@@ -163,7 +169,7 @@ def main(run_state: Dict[str, Any]) -> Dict[str, Any]:
             "difficulty": q.get("difficulty"),
             "tags": [t["name"] for t in (q.get("topicTags") or [])],
             "url": f"https://leetcode.com/problems/{q['titleSlug']}/",
-            "lang": sub.get("lang"),
+            "lang": lang_name,
             "runtime": sub.get("runtime"),
             "runtimeDisplay": sub.get("runtimeDisplay"),
             "memory": sub.get("memory"),

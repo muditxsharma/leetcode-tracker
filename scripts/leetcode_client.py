@@ -36,7 +36,7 @@ class LeetCodeClient:
             headers=headers,
             timeout=30,
         )
-        resp.raise_for_status()
+        resp.raise_for_status
         data = resp.json()
         if "errors" in data:
             raise RuntimeError(f"GraphQL errors: {data['errors']}")
@@ -72,7 +72,10 @@ class LeetCodeClient:
             memory
             memoryDisplay
             code
-            lang
+            lang {
+              name
+              verboseName
+            }
             timestamp
             question {
               titleSlug
