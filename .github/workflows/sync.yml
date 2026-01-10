@@ -1,0 +1,62 @@
+name: Sync LeetCode
+
+on:
+  schedule:
+    - cron: "0 0 */3 * *"  # every 3 days (72 hours) at 00:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run sync
+        env:
+          LEETCODE_USERNAME: ${{ secrets.LEETCODE_USERNAME }}
+          LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
+          LEETCODE_CSRF: ${{ secrets.LEETCODE_CSRF }}
+
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+
+          # LLM (optional; pick one)
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          # OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          LLM_PROVIDER: groq
+          LLM_MODEL: llama-3.1-70b-versatile
+
+          # Email notification (optional but recommended)
+          EMAIL_SMTP_USER: ${{ secrets.EMAIL_SMTP_USER }}
+          EMAIL_SMTP_PASSWORD: ${{ secrets.EMAIL_SMTP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          # EMAIL_FROM: ${{ secrets.EMAIL_FROM }}  # optional
+
+        run: |
+          python scripts/sync.py
+
+      - name: Commit and push changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "leetcode-sync-bot"
+            git config user.email "leetcode-sync-bot@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: sync leetcode submissions"
+            git push
+          else
+            echo "No changes to commit."
+          fi
