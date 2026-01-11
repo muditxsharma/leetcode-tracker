@@ -6,7 +6,7 @@
 - **Link:** https://leetcode.com/problems/palindrome-number/
 - **Language (detected):** python3
 - **Runtime:** 4 ms
-- **Memory:** 19.6 MB
+- **Memory:** 19.4 MB
 
 ## Problem (summary)
 
@@ -44,17 +44,34 @@ Follow up: Could you solve it without converting the integer to a string?
 
 ## Approach
 
-_TBD_
+**Approach**
+1. If the integer `x` is negative, it cannot be a palindrome (the minus sign would only appear on the left side), so return `False` immediately.
+2. Convert the integer to its decimal string representation using `str(x)`.
+3. Create the reversed version of that string with slicing `[::-1]`.
+4. Compare the original string with the reversed string. If they are identical, the number reads the same forward and backward, so return `True`; otherwise return `False`.
+
+The solution follows the straightforward *string‑compare* technique, which satisfies the problem statement but does not meet the follow‑up requirement of O(1) extra space.
 
 ## Complexity
 
-- **Time:** _TBD_
-- **Space:** _TBD_
+- **Time:** O(n) where n is the number of digits in x (string length)
+- **Space:** O(n) for the string representation and its reversed copy
 
 ## Pros
 
-- _TBD_
+- Very concise and easy to understand
+- Leverages Python’s built‑in string reversal which is highly optimized
+- Handles all positive integers correctly without extra arithmetic
 
 ## Cons
 
-- _TBD_
+- Uses O(n) extra space, violating the follow‑up constraint of O(1) space
+- Relies on string conversion, which may be considered cheating in an interview setting
+- Performance may be slightly slower than a pure arithmetic solution for very large inputs
+
+## Edge cases
+
+- Negative numbers (e.g., -121) should immediately return false
+- Numbers that end with 0 but are not 0 themselves (e.g., 10, 100) are not palindromes
+- Single‑digit numbers (including 0) are always palindromes
+- Maximum 32‑bit signed integer value (2^31‑1) should be handled without overflow because Python ints are unbounded
