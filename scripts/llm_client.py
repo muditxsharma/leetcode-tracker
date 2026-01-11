@@ -15,7 +15,7 @@ class LLMClient:
             self.api_key = (os.environ.get("GROQ_API_KEY") or "").strip()
             self.base_url = "https://api.groq.com/openai/v1"
             if not self.model:
-                self.model = "llama-3.1-70b-versatile"
+                self.model = "openai/gpt-oss-120b"
         elif self.provider == "openrouter":
             self.api_key = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
             self.base_url = "https://openrouter.ai/api/v1"

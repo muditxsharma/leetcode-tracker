@@ -1,1 +1,63 @@
+# =====================
+# Python
+# =====================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.env.*
+.venv/
+ENV/
+env/
 .env
+
+# =====================
+# Distribution / build
+# =====================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =====================
+# Testing / coverage
+# =====================
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# =====================
+# Logs & runtime files
+# =====================
+*.log
+*.pid
+
+# =====================
+# Jupyter
+# =====================
+.ipynb_checkpoints/
+
+# =====================
+# IDEs / Editors
+# =====================
+.vscode/
+.idea/
+*.iml
+
+# =====================
+# macOS
+# =====================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# =====================
+# OS / misc
+# =====================
+Thumbs.db
