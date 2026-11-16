@@ -36,7 +36,7 @@ class LeetCodeClient:
             headers=headers,
             timeout=30,
         )
-        resp.raise_for_status
+        resp.raise_for_status()
         data = resp.json()
         if "errors" in data:
             raise RuntimeError(f"GraphQL errors: {data['errors']}")
@@ -84,7 +84,16 @@ class LeetCodeClient:
         }
         """
         data = self._post(q, {"submissionId": int(submission_id)})
-        return data["submissionDetails"]
+        detail = data.get("submissionDetails")
+        if detail is None:
+            raise RuntimeError(
+                f"LeetCode returned no details for submission {submission_id}. "
+                "Check that LEETCODE_SESSION is valid and belongs to "
+                f"LEETCODE_USERNAME ({self.username}), and that the submission "
+                "is accessible to that account. Refresh LEETCODE_SESSION and "
+                "LEETCODE_CSRF from the same signed-in browser session if needed."
+            )
+        return detail
 
     def question_detail(self, title_slug: str) -> Dict[str, Any]:
         q = """
